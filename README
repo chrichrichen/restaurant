@@ -1,0 +1,5 @@
+. Express framework to build a simple searing web application
+. import JSON file and bring it into handlebars engine template
+. creating loop by 'each' function
+. params to create active route
+. use query string to make search function
