@@ -32,14 +32,12 @@
 </div>
 
 <!-- restaurant list -->
-  
-
-<div class="container mt-5 px-md-5">
+ <div class="container mt-5 px-md-5">
   <div class="row">
     {{#each restaurants}}
     <div class="col-12 col-sm-6 col-md-4">
         
-        <a href="/restaurants/{{this.id}}" class="text-secondary">
+        
           <div class="card mb-3">
             <img class="card-img-top" src="{{this.image}}"
               alt="{{this.name}}">
@@ -54,6 +52,13 @@
                 {{this.rating}}
                 <i class="fas fa-star fa-xs"></i>
               </span>
+            <div class="card-footer d-flex justify-content-end flex-wrap">
+              <a href="./restaurants/{{this._id}}/edit">Edit</a>
+              <a href="./restaurants/{{this._id}}">Details</a>
+
+            </div>
+
+
 
             </div>
 
