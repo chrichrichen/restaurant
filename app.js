@@ -29,9 +29,11 @@ app.use(express.static('public'))
 app.get('/', (req, res) => {
   Restaurant.find()
   .lean()
-  .then(restaurants => res.render(`index`, { restaurants: restaurantList.results }))
+  .then(restaurants => res.render(`index`, {restaurants}))
   .catch(error=>console.error(error))
 })
+
+
 
 app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
