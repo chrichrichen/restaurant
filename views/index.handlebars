@@ -7,6 +7,10 @@
           width="30" height="30" class="d-inline-block align-top" alt="我的餐廳清單">
         我的餐廳清單
       </a>
+      
+    </div>
+    <div class="container" >
+      <a href="/restaurants/new">Create</a>
     </div>
   </nav>
 
@@ -53,8 +57,11 @@
                 <i class="fas fa-star fa-xs"></i>
               </span>
             <div class="card-footer d-flex justify-content-end flex-wrap">
-              <a href="./restaurants/{{this._id}}/edit">Edit</a>
-              <a href="./restaurants/{{this._id}}">Details</a>
+              <a class="btn btn-success" href="./restaurants/{{this._id}}/edit">Edit</a>
+              <a class="btn btn-secondary" href="./restaurants/{{this._id}}">Details</a>
+              <form action="./restaurants/{{this._id}}/delete" method="POST" style="display:inline;">
+              <button class="btn btn-warning" type="submit">Delete</button>
+              </form>
 
             </div>
 
