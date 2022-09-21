@@ -7,19 +7,8 @@ const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const restaurantList = require('./restaurant.json')
-const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGODB_URI,{useNewUrlParser: true, useUnifiedTopology: true})
 
-const db = mongoose.connection
-
-db.on('error',()=>{
-  console.log('mongodb error!')
-})
-
-db.once('open',()=>{
-  console.log('mongodb connected!')
-})
-
+require('./config/mongoose')
 
 
 app.use(bodyParser.urlencoded({extended:true}))
