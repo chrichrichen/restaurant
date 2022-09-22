@@ -4,7 +4,6 @@ const Restaurant = require('../../models/restaurant')
 const bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({extended:true}))
 
-
 router.get('/new',(req,res)=>{
   return res.render('new')
 })
@@ -34,24 +33,26 @@ router.get('/:id/edit',(req,res)=>{
 
 router.put('/:id',(req,res)=>{
   const id = req.params.id
-  const name = req.body.name
+  const {name , name_en, category, image, location, phone, google_map, rating,description } = req.body
   return Restaurant.findById(id)
   .then(restaurant =>{
     restaurant.name = name
-    return restaurant.save()
+    restaurant.name_en = name_en
+    restaurant.category = category
+    restaurant.image = image
+    restaurant.location = location
+    restaurant.phone = phone
+    restaurant.google_map = google_map
+    restaurant.rating = rating
+    restaurant.description = description
+
+     return restaurant.save()
   })
   .then(()=> res.redirect(`/restaurants/${id}`))
   .catch(error=>console.log(error))
 })
 
 
-router.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  const restaurants = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurants, keyword })
-})
 
 router.delete('/:id',(req,res)=>{
   const id = req.params.id
