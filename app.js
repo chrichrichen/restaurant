@@ -1,14 +1,20 @@
 const express = require('express')
-const routes = require('./routes')
-const app = express()
-const port = 4000
-const Restaurant = require('./models/restaurant')
 const exphbs = require('express-handlebars')
+const Restaurant = require('./models/restaurant')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-const restaurantList = require('./restaurant.json')
-
+const routes = require('./routes')
 require('./config/mongoose')
+const PORT = process.env.PORT || 4000
+const app = express()
+
+
+
+
+
+
+
+
 
 
 app.use(bodyParser.urlencoded({extended:true}))
@@ -25,6 +31,6 @@ app.use(routes)
 
 
 
-app.listen(port, () => {
-  console.log(`creating restaurant project http://localhost:${port}`)
+app.listen(PORT, () => {
+  console.log(`creating restaurant project http://localhost:${PORT}`)
 })

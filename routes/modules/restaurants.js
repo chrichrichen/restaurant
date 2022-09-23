@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Restaurant = require('../../models/restaurant')
-const bodyParser = require('body-parser')
-router.use(bodyParser.urlencoded({extended:true}))
+
 
 router.get('/new',(req,res)=>{
   return res.render('new')
