@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const Restaurant = require('./models/restaurant')
 const bodyParser = require('body-parser')
@@ -11,6 +12,12 @@ const app = express()
 app.use(bodyParser.urlencoded({ extended: true }))
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
+
+app.use(session({
+  secret:'ThisIsMySecret',
+  resave: false,
+  saveUninitialized:true
+}))
 
 app.use(express.static('public'))
 app.use(methodOverride('_method'))
