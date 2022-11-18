@@ -2,6 +2,7 @@ const e = require('express')
 const express = require('express')
 const User = require('../../models/user')
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 const router = express.Router()
 router.get('/login' ,(req,res)=>{
   res.render('login')
@@ -28,10 +29,10 @@ router.post('/register', (req, res) => {
   const { name, email, password, confirmPassword } = req.body
   const errors = []
   if (!name || !email || !password || !confirmPassword) {
-    errors.push({ message: '所有欄位都是必填。' })
+    errors.push({ message: 'Every field is required!' })
   }
   if (password !== confirmPassword) {
-    errors.push({ message: '密碼與確認密碼不相符！' })
+    errors.push({ message: 'Passwords do not match!' })
   }
   if (errors.length) {
     return res.render('register', {
@@ -44,7 +45,7 @@ router.post('/register', (req, res) => {
   }
   User.findOne({ email }).then(user => {
     if (user) {
-      errors.push({ message: '這個 Email 已經註冊過了。' })
+      errors.push({ message: 'The email has been registered!' })
       return res.render('register', {
         errors,
         name,
@@ -52,12 +53,18 @@ router.post('/register', (req, res) => {
         password,
         confirmPassword
       })
+
     }
-    return User.create({
-      name,
-      email,
-      password
-    })
+    return bcrypt
+      .genSalt(10)
+      .then(salt => bcrypt.hash(password,salt))
+      .then(hash => User.create({
+       name,
+       email,
+       password: hash
+    
+      })) 
+    
       .then(() => res.redirect('/'))
       .catch(err => console.log(err))
   })
