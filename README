@@ -3,3 +3,6 @@
 . creating loop by 'each' function
 . params to create active route
 . use query string to make search function
+. Add facebook auth login
+. add login / logout function
+. add userSeeder
