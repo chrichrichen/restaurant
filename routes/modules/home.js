@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Restaurant = require("../../models/restaurant");
+const Restaurant = require("../../models/restaurant")
 // 首頁
 router.get("/", (req, res) => {
   const userId = req.user._id;

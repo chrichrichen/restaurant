@@ -1,55 +1,56 @@
 const bcrypt = require("bcryptjs");
+const Restaurant = require("../restaurant");
+const User = require("../user");
+const restaurantList = require("./restaurant.json").results;
+const userList = require("./user.json").results;
+const db = require("../../config/mongoose");
+
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
-const Restaurant = require("../restaurant");
-const User = require("../user");
-const restaurantData = require("../../restaurant.json").results;
-const db = require("../../config/mongoose");
-const SEED_USERS = [
-  {
-    name: "user1",
-    email: "user1@example.com",
-    password: "12345678",
-    restaurantIndex: [0, 1, 2],
-  },
-  {
-    name: "user2",
-    email: "user2@example.com",
-    password: "12345678",
-    restaurantIndex: [3, 4, 5],
-  },
-];
-
 db.once("open", () => {
   return Promise.all(
-    SEED_USERS.map((user) => {
-      const { restaurantIndex } = user;
+    userList.map((userData, userIndex) => {
       return bcrypt
         .genSalt(10)
-        .then((salt) => bcrypt.hash(user.password, salt))
+        .then((salt) => bcrypt.hash(userData.password, salt))
         .then((hash) =>
           User.create({
-            name: user.name,
-            email: user.email,
+            name: userData.name,
+            email: userData.email,
             password: hash,
           })
         )
         .then((user) => {
-          const restaurants = restaurantIndex.map((index) => {
-            const restaurant = restaurantData[index];
-            restaurant.userId = user._id;
-            return restaurant;
-          });
-          return Restaurant.create(restaurants);
+          return Promise.all(
+            // userIndex 0,1
+            // restaurantData.id 012,345
+            Array.from(restaurantList, (restaurantData) => {
+              const restaurantIndex = restaurantData.id - 1;           
+              if (
+                restaurantIndex >= 3 * userIndex &&
+                restaurantIndex < 3 * (userIndex + 1)                
+              ) {
+                restaurantData.userId = user._id;
+                console.log(userIndex);
+                console.log(restaurantIndex);
+                return Restaurant.create(restaurantData);                
+              }else if (restaurantIndex >= 6 && userIndex < 1) {
+                restaurantData.userId = user._id;
+                console.log(userIndex);
+                console.log(restaurantIndex);
+                return Restaurant.create(restaurantData);
+              }        
+            })
+          );
         })
-        .catch((error) => console.log(error));
+        .catch((err) => console.log(err));
     })
   )
     .then(() => {
-      console.log("done");
+      console.log("Done!");
       process.exit();
     })
-    .catch((error) => console.log(error));
+    .catch((err) => console.log(err));
 });
